@@ -1,5 +1,0 @@
-interface Algorithm {
-    
-};
-
-export { Algorithm };
