@@ -23,10 +23,10 @@ int main(void)
             "Insert Sort    = %d times\n"
             "Quick Sort     = %d times\n\n"
             "After  : ",
-            bubbleSort(arr[0], N),
-            selectionSort(arr[1], N),
-            insertSort(arr[2], N),
-            quickSortRecur(arr[3], N, 0, N - 1));
+            bubble_sort(arr[0], N),
+            selection_sort(arr[1], N),
+            insertion_sort(arr[2], N),
+            quick_sort_recursive(arr[3], N, 0, N - 1));
     for (i = 0; i < N; ++i)
         printf("%d ", arr[3][i]);
     printf("\n\n");

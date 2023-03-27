@@ -1,11 +1,11 @@
 #include "./sorts.h"
 
-int bubbleSort(int arr[], const int n)
+int bubble_sort(int arr[], const int n)
 {
     int i;
     int j;
     int temp;
-    int computationCount = 0;
+    int computation_count = 0;
     if (!arr)
         return ARR_IS_EMPTY;
     else if (n <= 0)
@@ -17,18 +17,18 @@ int bubbleSort(int arr[], const int n)
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
             }
-            ++computationCount;
+            ++computation_count;
         }
     }
-    return computationCount;
+    return computation_count;
 }
 
-int selectionSort(int arr[], const int n)
+int selection_sort(int arr[], const int n)
 {
     int i;
     int j;
     int temp;
-    int computationCount = 0;
+    int computation_count = 0;
     if (!arr)
         return ARR_IS_EMPTY;
     else if (n <= 0)
@@ -40,19 +40,19 @@ int selectionSort(int arr[], const int n)
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
-            ++computationCount;
+            ++computation_count;
         }
     }
-    return computationCount;
+    return computation_count;
 }
 
-int insertSort(int arr[], const int n)
+int insertion_sort(int arr[], const int n)
 {
     int i;
     int j;
     int temp;
     int target;
-    int computationCount = 0;
+    int computation_count = 0;
     if (!arr)
         return ARR_IS_EMPTY;
     else if (n <= 0)
@@ -61,40 +61,39 @@ int insertSort(int arr[], const int n)
         target = arr[i];
         for (j = i - 1; j >= 0 && arr[j] > target; --j) {
             arr[j + 1] = arr[j];
-            ++computationCount;
+            ++computation_count;
         }
         arr[j + 1] = target;
     }
-    return computationCount;
+    return computation_count;
 }
 
-int quickSortRecur(int arr[], const int n, int lIndex, int rIndex)
+int quick_sort_recursive(int arr[], const int n, int l_index, int r_index)
 {
     int i;
     int j;
     int temp;
-    int computationCount = 0;
-    int lPivot = lIndex;
-    int rPivot = rIndex;
+    int pivot = l_index;
+    int computation_count = 0;
     if (!arr)
         return ARR_IS_EMPTY;
     else if (n <= 0)
         return ARR_LENGTH_IS_NEGATIVE;
-    else if (rIndex > n)
-        return -3;
-    else if (rIndex - lIndex <= 0)
-        return 1;
-    for (i = lPivot; i < rPivot; ++i) {
-        if (arr[rPivot] > arr[i]) {
-            temp = arr[lPivot];
-            arr[lPivot] = arr[i];
+    else if (r_index > n)
+        return QUICK_SORT_INCORRECT_INDEXING;
+    else if (l_index >= r_index)
+        return 0;
+    for (i = pivot; i < r_index; ++i) {
+        if (arr[r_index] > arr[i]) {
+            temp = arr[pivot];
+            arr[pivot] = arr[i];
             arr[i] = temp;
-            ++lPivot;
+            ++pivot;
         }
-        ++computationCount;
+        ++computation_count;
     }
-    temp = arr[lPivot];
-    arr[lPivot] = arr[rPivot];
-    arr[rPivot] = temp;
-    return computationCount + quickSortRecur(arr, n, lIndex, lPivot - 1) + quickSortRecur(arr, n, lPivot + 1, rIndex);
+    temp = arr[pivot];
+    arr[pivot] = arr[r_index];
+    arr[r_index] = temp;
+    return computation_count + quick_sort_recursive(arr, n, l_index, pivot - 1) + quick_sort_recursive(arr, n, pivot + 1, r_index);
 }

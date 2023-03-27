@@ -1,8 +1,9 @@
 #ifndef SORTS_H
 #define SORTS_H
 
-#define ARR_IS_EMPTY            -1
-#define ARR_LENGTH_IS_NEGATIVE  -2
+#define ARR_IS_EMPTY                    -1
+#define ARR_LENGTH_IS_NEGATIVE          -2
+#define QUICK_SORT_INCORRECT_INDEXING   -5
 
 /**
  * Bubble Sorting Algorithm.
@@ -18,7 +19,7 @@
  * 
  * Returns the number of calculations performed.
 */
-int bubbleSort(int arr[], const int n);
+int bubble_sort(int arr[], const int n);
 
 /**
  * Selection Sorting Algorithm.
@@ -34,7 +35,7 @@ int bubbleSort(int arr[], const int n);
  * 
  * Returns the number of calculations performed.
 */
-int selectionSort(int arr[], const int n);
+int selection_sort(int arr[], const int n);
 
 /**
  * Insert Sorting Algorithm.
@@ -50,7 +51,7 @@ int selectionSort(int arr[], const int n);
  * 
  * Returns the number of calculations performed.
 */
-int insertSort(int arr[], const int n);
+int insertion_sort(int arr[], const int n);
 
 /**
  * Quick Sorting Algorithm.
@@ -63,13 +64,13 @@ int insertSort(int arr[], const int n);
  * Arguments
  * arr : array of integer
  * n : length of array
- * lIndex : The left index value - must be set to 
- *          the first index value of the element to be sorted when called.
- * rIndex : The right index value - must be set to 
- *          the last index value of the element to be sorted when called.
+ * l_index : The left index value - must be set to 
+ *           the first index value of the element to be sorted when called.
+ * r_index : The right index value - must be set to 
+ *           the last index value of the element to be sorted when called.
  * 
  * Returns the number of calculations performed.
 */
-int quickSortRecur(int arr[], const int n, int lIndex, int rIndex);
+int quick_sort_recursive(int arr[], const int n, int l_index, int r_index);
 
 #endif
