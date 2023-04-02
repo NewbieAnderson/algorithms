@@ -1,10 +1,28 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdio.h>
+
 #define INITIALIZE_NODE(node, prev, next, value) \
 node->prev = prev; \
 node->next = next; \
 node->value = value;
+
+/* when next node does not exists */
+#define BREAK_CONDITION_1(node) (node->next == NULL)
+
+/* when 2 nodes have a circular structure */
+#define BREAK_CONDITION_2(node) (node == node->next->next)
+
+/* when 3 nodes have a circular structure */
+#define BREAK_CONDITION_3(node) (node->next->next->next == node)
+
+/* when more than 4 nodes have a circular structure */
+#define BREAK_CONDITION_4(node) (node->next->prev != node)
+
+#define LOOP_CONDITION(node) !BREAK_CONDITION_1(node) && !BREAK_CONDITION_2(node) && !BREAK_CONDITION_3(node) && !BREAK_CONDITION_4(node)
+
+#define CHECK_IS_CIRCULAR(entry) entry->prev != NULL
 
 /**
  * node of linked list.
@@ -23,9 +41,10 @@ struct node {
  * visit all nodes in the linked list.
  * 
  * entry : entry of linked list
- * print_or_not : decide whether to print to console or not, 0 is false
+ * routine : function pointer to be called each time each node is visited.
+ *           if there is no function to call each node, it should be set to NULL.
 */
-void retrieve_all(struct node *entry, char print_or_not);
+void retrieve_all(struct node *entry, void *(*routine)(struct node *current));
 
 /**
  * return the value of node present in that index.
@@ -94,5 +113,9 @@ int push(struct node *entry, int value);
  * entry : entry of linked list
 */
 void pop(struct node *entry);
+
+void make_circular(struct node *entry);
+
+void detach_head_and_tail(struct node *entry);
 
 #endif
