@@ -29,5 +29,12 @@ int main(void)
         strlen("hello ring buffer5")
     });
     retrieve(&rbuf);
+    printf("\n");
+    remove_item(&rbuf);
+    remove_item(&rbuf);
+    retrieve(&rbuf);
+    clear_buffer(&rbuf);
+    retrieve(&rbuf);
+    delete_ring_buffer(&rbuf);
     return 0;
 }

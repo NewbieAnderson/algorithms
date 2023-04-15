@@ -46,6 +46,10 @@ void retrieve(struct ring_buffer *rbuf)
 {
     int read = rbuf->read_ptr;
     int write = rbuf->write_ptr;
+    if (rbuf->size > 0) {
+        printf("%s\n", rbuf->buf[read].bytes);
+        read = (read + 1) % rbuf->capacity;
+    }
     while (read != write) {
         printf("%s\n", rbuf->buf[read].bytes);
         read = (read + 1) % rbuf->capacity;
@@ -62,5 +66,6 @@ void clear_buffer(struct ring_buffer *rbuf)
 {
     rbuf->read_ptr = 0;
     rbuf->write_ptr = 0;
+    rbuf->size = 0;
     memset(rbuf->buf, 0, sizeof(struct item));
 }
