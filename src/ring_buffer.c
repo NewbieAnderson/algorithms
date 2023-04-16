@@ -16,8 +16,8 @@ int init_ring_buffer(struct ring_buffer *rbuf, const int capacity)
 
 void insert_item(struct ring_buffer *rbuf, struct item value)
 {
-    if (rbuf->read_ptr == rbuf->write_ptr && rbuf->size != 0) {
-        printf("cannot add more items.\n");
+    if (rbuf->size >= rbuf->capacity) {
+        printf("insert_item() : cannot add more items.\n(bytes : \"%s\")\n", value.bytes);
         return;
     }
     ++rbuf->size;
@@ -27,19 +27,14 @@ void insert_item(struct ring_buffer *rbuf, struct item value)
 
 struct item remove_item(struct ring_buffer *rbuf)
 {
-    int read = rbuf->read_ptr;
-    if (rbuf->size == 0)
+    const int read_ptr = rbuf->read_ptr;
+    if (rbuf->size <= 0) {
+        printf("remove_item() : cannot remove more!\n");
         return (struct item){ { 0, }, 0 };
+    }
     --rbuf->size;
-    rbuf->read_ptr = (read + 1) % rbuf->capacity;
-    return rbuf->buf[read];
-}
-
-const struct item *get_item(struct ring_buffer *rbuf, int index)
-{
-    if (rbuf->read_ptr == rbuf->write_ptr && rbuf->size != 0)
-        return NULL;
-    return NULL;
+    rbuf->read_ptr = (read_ptr + 1) % rbuf->capacity;
+    return rbuf->buf[read_ptr];
 }
 
 void retrieve(struct ring_buffer *rbuf)
@@ -56,16 +51,16 @@ void retrieve(struct ring_buffer *rbuf)
     }
 }
 
-void delete_ring_buffer(struct ring_buffer *rbuf)
-{
-    free(rbuf->buf);
-    rbuf->buf = NULL;
-}
-
 void clear_buffer(struct ring_buffer *rbuf)
 {
     rbuf->read_ptr = 0;
     rbuf->write_ptr = 0;
     rbuf->size = 0;
     memset(rbuf->buf, 0, sizeof(struct item));
+}
+
+void delete_ring_buffer(struct ring_buffer *rbuf)
+{
+    free(rbuf->buf);
+    rbuf->buf = NULL;
 }

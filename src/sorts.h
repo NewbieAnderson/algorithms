@@ -64,9 +64,9 @@ int insertion_sort(int arr[], const int n);
  * Arguments
  * arr : array of integer
  * n : length of array
- * l_index : The left index value - must be set to 
+ * l_index : The left index value - must be set to
  *           the first index value of the element to be sorted when called.
- * r_index : The right index value - must be set to 
+ * r_index : The right index value - must be set to
  *           the last index value of the element to be sorted when called.
  * 
  * Returns the number of calculations performed.
