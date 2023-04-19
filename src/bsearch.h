@@ -11,6 +11,6 @@
  * len : length of array, passing the wrong length can cause undefined behavior
  * value : value to be found
 */
-const int bsearch(const int arr[], const int len, const int value);
+int bsearch(const int arr[], const int len, const int value);
 
 #endif

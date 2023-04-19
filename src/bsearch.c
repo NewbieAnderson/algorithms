@@ -1,6 +1,6 @@
 #include "bsearch.h"
 
-const int bsearch(const int arr[], const int len, const int value) {
+int bsearch(const int arr[], const int len, const int value) {
     int left = 0;
     int right = len - 1;
     int mid;
