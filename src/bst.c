@@ -10,7 +10,7 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
     while (node) {
         if (node->data == data)
             return node;
-        node = node->data < data ? node->left : node->right;
+        node = node->data > data ? node->left : node->right;
     }
     return NULL;
 }
@@ -18,7 +18,7 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
 int bst_insert(const struct bst_node *const root, const int data)
 {
     struct bst_node *node = root;
-    struct bst_node *const new_node = malloc(sizeof(struct bst_node));
+    struct bst_node *new_node = malloc(sizeof(struct bst_node));
     if (new_node == NULL || node == NULL)
         return -1;
     new_node->left = NULL;
@@ -26,20 +26,24 @@ int bst_insert(const struct bst_node *const root, const int data)
     new_node->data = data;
     new_node->is_dynamic = 1;
     while (node) {
-        if (node->data < data) {
+        if (node->data > data) {
             if (node->left != NULL) {
                 node = node->left;
             } else {
                 node->left = new_node;
                 break;
             }
-        } else {
+        } else if (node->data < data) {
             if (node->right != NULL) {
                 node = node->right;
             } else {
                 node->right = new_node;
                 break;
             }
+        } else {
+            free(new_node);
+            new_node = NULL;
+            return -1;
         }
     }
     return 0;
