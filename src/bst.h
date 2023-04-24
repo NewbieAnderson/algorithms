@@ -9,22 +9,27 @@
  * left : left child node
  * right : right child node
  * value : value of node (also called as key or data)
+ * is_dynamic : identifier for dynamic or not, must be set to 0 (false) or 1 (true)
+ * (recommended not to change directly)
  * 
- * all nodes are dynamically assigned by malloc()
- * direct access of left, right property can cause unintended behavior
+ * except of root node, dynamic allocation of node by bst_insert() function is highly recommeded
+ * direct modification of left, right property can cause unintended behavior
 */
 struct bst_node {
     struct bst_node *left;
     struct bst_node *right;
     int value;
+    unsigned char is_dynamic;
 };
 
 /**
- * initialize bst tree
+ * initialize bst tree - create root node
+ * return newly assigned root node
+ * return NULL if failed to allocate dynamically
  * 
- * empty_node : node to be the root node - must be empty
+ * value : value to insert
 */
-void init_bst(struct bst_node *empty_node);
+struct bst_node *const init_bst(int value);
 
 /**
  * traverse in pre-order
@@ -59,12 +64,15 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
 
 /**
  * insert value in bst
+ * return pointer of newly assigned node or null pointer
  * if the value already exists, do nothing
+ * 
+ * if root is NULL, initialize bst tree - create new root node
  * 
  * root : root node of bst
  * value : value to insert
 */
-int bst_insert(const struct bst_node *const root, const int value);
+struct bst_node *const bst_insert(const struct bst_node *const root, const int value);
 
 /**
  * delete value in bst

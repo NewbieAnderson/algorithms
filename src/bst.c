@@ -1,9 +1,5 @@
 #include "bst.h"
 
-void init_bst(struct bst_node *empty_node)
-{
-}
-
 void traverse_pre_order_recursive(const struct bst_node *const node)
 {
     if (node == NULL)
@@ -40,15 +36,25 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
     return NULL;
 }
 
-int bst_insert(const struct bst_node *const root, const int value)
+struct bst_node *const bst_insert(const struct bst_node *const root, const int value)
 {
     struct bst_node *node = root;
     struct bst_node *new_node = malloc(sizeof(struct bst_node));
+    if (node == NULL) {
+        node = malloc(sizeof(struct bst_node));
+        if (root == NULL)
+            return NULL;
+        node->left = NULL;
+        node->right = NULL;
+        node->value = value;
+        return node;
+    }
     if (new_node == NULL || node == NULL)
         return -1;
     new_node->left = NULL;
     new_node->right = NULL;
     new_node->value = value;
+    new_node->is_dynamic = 1;
     while (node) {
         if (node->value > value) {
             if (node->left != NULL) {
@@ -67,10 +73,10 @@ int bst_insert(const struct bst_node *const root, const int value)
         } else {
             free(new_node);
             new_node = NULL;
-            return -1;
+            return new_node;
         }
     }
-    return 0;
+    return new_node;
 }
 
 void bst_delete(const struct bst_node *const root, const int value)
@@ -92,21 +98,24 @@ void bst_delete(const struct bst_node *const root, const int value)
             subtree_node = subtree_node->right;
         }
         node->value = subtree_node->value;
-        free(subtree_node);
+        if (node->is_dynamic)
+            free(subtree_node);
         subtree_node = NULL;
     } else if (node->left != NULL) {
         if (parent_node->left == node)
             parent_node->left = node->left;
         else if (parent_node->right == node)
             parent_node->right = node->left;
-        free(node);
+        if (node->is_dynamic)
+            free(node);
         node = NULL;
     } else if (node->right != NULL) {
         if (parent_node->left == node)
             parent_node->left = node->right;
         else if (parent_node->right == node)
             parent_node->right = node->right;
-        free(node);
+        if (node->is_dynamic)
+            free(node);
         node = NULL;
     } else {
         if (parent_node != NULL) {
@@ -115,7 +124,8 @@ void bst_delete(const struct bst_node *const root, const int value)
             else if (parent_node->right == node)
                 parent_node->right = NULL;
         }
-        free(node);
+        if (node->is_dynamic)
+            free(node);
         node = NULL;
         return;
     }
