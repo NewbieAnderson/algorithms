@@ -27,7 +27,7 @@ void traverse_post_order_recursive(struct bst_node *node)
 
 struct bst_node *bst_search(struct bst_node *root, const int value)
 {
-    const struct bst_node *node = root;
+    struct bst_node *node = root;
     while (node) {
         if (node->value == value)
             return node;
