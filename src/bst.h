@@ -1,6 +1,7 @@
 #ifndef BST_H
 #define BST_H
 
+#include <stdio.h>
 #include <stdlib.h>
 
 /**
@@ -23,34 +24,25 @@ struct bst_node {
 };
 
 /**
- * initialize bst tree - create root node
- * return newly assigned root node
- * return NULL if failed to allocate dynamically
- * 
- * value : value to insert
-*/
-struct bst_node *const init_bst(int value);
-
-/**
  * traverse in pre-order
  * 
  * root : root node of bst
 */
-void traverse_pre_order_recursive(const struct bst_node *const root);
+void traverse_pre_order_recursive(struct bst_node *node);
 
 /**
  * traverse in in-order
  * 
  * root : root node of bst
 */
-void traverse_in_order_recursive(const struct bst_node *const root);
+void traverse_in_order_recursive(struct bst_node *node);
 
 /**
  * traverse in post-order
  * 
  * root : root node of bst
 */
-void traverse_post_order_recursive(const struct bst_node *const root);
+void traverse_post_order_recursive(struct bst_node *node);
 
 /**
  * search value in bst
@@ -60,7 +52,7 @@ void traverse_post_order_recursive(const struct bst_node *const root);
  * root : root node of bst
  * value : value to search
 */
-const struct bst_node *const bst_search(const struct bst_node *const root, const int value);
+struct bst_node* bst_search(struct bst_node *root, const int value);
 
 /**
  * insert value in bst
@@ -72,7 +64,7 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
  * root : root node of bst
  * value : value to insert
 */
-struct bst_node *const bst_insert(const struct bst_node *const root, const int value);
+struct bst_node *bst_insert(struct bst_node *root, const int value);
 
 /**
  * delete value in bst
@@ -82,6 +74,6 @@ struct bst_node *const bst_insert(const struct bst_node *const root, const int v
  * root : root node of bst
  * value : value to delete
 */
-void bst_delete(const struct bst_node *const root, const int value);
+void bst_delete(struct bst_node *root, const int value);
 
 #endif

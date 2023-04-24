@@ -1,6 +1,6 @@
 #include "bst.h"
 
-void traverse_pre_order_recursive(const struct bst_node *const node)
+void traverse_pre_order_recursive(struct bst_node *node)
 {
     if (node == NULL)
         return;
@@ -9,7 +9,7 @@ void traverse_pre_order_recursive(const struct bst_node *const node)
     traverse_pre_order_recursive(node->right);
 }
 
-void traverse_in_order_recursive(const struct bst_node *const node)
+void traverse_in_order_recursive(struct bst_node *node)
 {
     if (node == NULL)
         return;
@@ -18,14 +18,14 @@ void traverse_in_order_recursive(const struct bst_node *const node)
     traverse_in_order_recursive(node->right);
 }
 
-void traverse_post_order_recursive(const struct bst_node *const node)
+void traverse_post_order_recursive(struct bst_node *node)
 {
     traverse_post_order_recursive(node->left);
     printf("%d\n", node->value);
     traverse_post_order_recursive(node->right);
 }
 
-const struct bst_node *const bst_search(const struct bst_node *const root, const int value)
+struct bst_node *bst_search(struct bst_node *root, const int value)
 {
     const struct bst_node *node = root;
     while (node) {
@@ -36,7 +36,7 @@ const struct bst_node *const bst_search(const struct bst_node *const root, const
     return NULL;
 }
 
-struct bst_node *const bst_insert(const struct bst_node *const root, const int value)
+struct bst_node *bst_insert(struct bst_node *root, const int value)
 {
     struct bst_node *node = root;
     struct bst_node *new_node = malloc(sizeof(struct bst_node));
@@ -47,10 +47,11 @@ struct bst_node *const bst_insert(const struct bst_node *const root, const int v
         node->left = NULL;
         node->right = NULL;
         node->value = value;
+        node->is_dynamic = 1;
         return node;
     }
     if (new_node == NULL || node == NULL)
-        return -1;
+        return NULL;
     new_node->left = NULL;
     new_node->right = NULL;
     new_node->value = value;
@@ -79,7 +80,7 @@ struct bst_node *const bst_insert(const struct bst_node *const root, const int v
     return new_node;
 }
 
-void bst_delete(const struct bst_node *const root, const int value)
+void bst_delete(struct bst_node *root, const int value)
 {
     struct bst_node *node = root;
     struct bst_node *parent_node = NULL;
