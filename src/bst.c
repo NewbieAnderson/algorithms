@@ -42,7 +42,7 @@ struct bst_node *bst_insert(struct bst_node *root, const int value)
     struct bst_node *new_node = malloc(sizeof(struct bst_node));
     if (node == NULL) {
         node = malloc(sizeof(struct bst_node));
-        if (root == NULL)
+        if (node == NULL)
             return NULL;
         node->left = NULL;
         node->right = NULL;
@@ -84,8 +84,8 @@ void bst_delete(struct bst_node *root, const int value)
 {
     struct bst_node *node = root;
     struct bst_node *parent_node = NULL;
+    struct bst_node *child_node = NULL;
     struct bst_node *subtree_node = NULL;
-    struct bst_node *parent_subtree_node = NULL;
     while (node != NULL && node->value != value) {
         parent_node = node;
         node = node->value > value ? node->left : node->right;
@@ -95,45 +95,20 @@ void bst_delete(struct bst_node *root, const int value)
     if (node->left != NULL && node->right != NULL) {
         subtree_node = node->left;
         while (subtree_node->right) {
-            parent_subtree_node = subtree_node;
+            node = subtree_node;
             subtree_node = subtree_node->right;
         }
         node->value = subtree_node->value;
-        if (node->is_dynamic)
-            free(subtree_node);
-        subtree_node = NULL;
-    } else if (node->left != NULL) {
-        if (parent_node->left == node)
-            parent_node->left = node->left;
-        else if (parent_node->right == node)
-            parent_node->right = node->left;
-        if (node->is_dynamic)
-            free(node);
-        node = NULL;
-    } else if (node->right != NULL) {
-        if (parent_node->left == node)
-            parent_node->left = node->right;
-        else if (parent_node->right == node)
-            parent_node->right = node->right;
-        if (node->is_dynamic)
-            free(node);
-        node = NULL;
+        child_node = subtree_node->left;
     } else {
-        if (parent_node != NULL) {
-            if (parent_node->left == node)
-                parent_node->left = NULL;
-            else if (parent_node->right == node)
-                parent_node->right = NULL;
-        }
-        if (node->is_dynamic)
-            free(node);
-        node = NULL;
-        return;
+        child_node = node->left != NULL ? node->left : node->right;
     }
-    if (parent_subtree_node != NULL) {
-        if (parent_subtree_node->left == subtree_node)
-            parent_subtree_node->left = NULL;
-        else if (parent_subtree_node->right == subtree_node)
-            parent_subtree_node->right = NULL;
-    }
+    if (parent_node == NULL)
+        root = child_node;
+    else if (parent_node->left == node)
+        parent_node->left = child_node;
+    else
+        parent_node->right = child_node;
+    if (node->is_dynamic)
+        free(node);
 }
