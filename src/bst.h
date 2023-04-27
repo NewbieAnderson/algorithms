@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * Binary Search Tree (BST)
@@ -27,22 +28,25 @@ struct bst_node {
  * traverse in pre-order
  * 
  * root : root node of bst
+ * node : node of bst - it should be the same as root
 */
-void traverse_pre_order_recursive(struct bst_node *node);
+void traverse_pre_order_recursive(struct bst_node *root, struct bst_node *node);
 
 /**
  * traverse in in-order
  * 
  * root : root node of bst
+ * node : node of bst - it should be the same as root
 */
-void traverse_in_order_recursive(struct bst_node *node);
+void traverse_in_order_recursive(struct bst_node *root, struct bst_node *node);
 
 /**
  * traverse in post-order
  * 
  * root : root node of bst
+ * node : node of bst - it should be the same as root
 */
-void traverse_post_order_recursive(struct bst_node *node);
+void traverse_post_order_recursive(struct bst_node *root, struct bst_node *node);
 
 /**
  * search value in bst
@@ -74,6 +78,8 @@ struct bst_node *bst_insert(struct bst_node *root, const int value);
  * root : root node of bst
  * value : value to delete
 */
-void bst_delete(struct bst_node *root, const int value);
+void bst_delete(struct bst_node **root, const int value);
+
+void bst_free(struct bst_node *root);
 
 #endif

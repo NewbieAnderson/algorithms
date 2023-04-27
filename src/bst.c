@@ -1,28 +1,41 @@
 #include "bst.h"
 
-void traverse_pre_order_recursive(struct bst_node *node)
+void traverse_pre_order_recursive(struct bst_node *root, struct bst_node *node)
 {
     if (node == NULL)
         return;
-    printf("%d\n", node->value);
-    traverse_pre_order_recursive(node->left);
-    traverse_pre_order_recursive(node->right);
+    if (node == root)
+        printf("traversing pre order\n");
+    traverse_pre_order_recursive(root, node->left);
+    traverse_pre_order_recursive(root, node->right);
+    if (node == root)
+        printf("\n");
 }
 
-void traverse_in_order_recursive(struct bst_node *node)
+void traverse_in_order_recursive(struct bst_node *root, struct bst_node *node)
+{
+    if (node == root)
+        printf("traversing in order\n");
+    if (node == NULL)
+        return;
+    traverse_in_order_recursive(root, node->left);
+    printf("%d ", node->value);
+    traverse_in_order_recursive(root, node->right);
+    if (node == root)
+        printf("\n");
+}
+
+void traverse_post_order_recursive(struct bst_node *root, struct bst_node *node)
 {
     if (node == NULL)
         return;
-    traverse_in_order_recursive(node->left);
-    printf("%d\n", node->value);
-    traverse_in_order_recursive(node->right);
-}
-
-void traverse_post_order_recursive(struct bst_node *node)
-{
-    traverse_post_order_recursive(node->left);
-    printf("%d\n", node->value);
-    traverse_post_order_recursive(node->right);
+    if (node == root)
+        printf("traversing post order\n");
+    traverse_post_order_recursive(root, node->left);
+    traverse_post_order_recursive(root, node->right);
+    printf("%d ", node->value);
+    if (node == root)
+        printf("\n");
 }
 
 struct bst_node *bst_search(struct bst_node *root, const int value)
@@ -80,35 +93,67 @@ struct bst_node *bst_insert(struct bst_node *root, const int value)
     return new_node;
 }
 
-void bst_delete(struct bst_node *root, const int value)
+void bst_delete(struct bst_node **root, const int value)
 {
-    struct bst_node *node = root;
+    struct bst_node *node = *root;
     struct bst_node *parent_node = NULL;
-    struct bst_node *child_node = NULL;
-    struct bst_node *subtree_node = NULL;
+    struct bst_node *leaf_node = NULL;
+    struct bst_node *parent_leaf_node = NULL;
+    /* ---------- todo : more clean up code ---------- */
+    if (node == NULL)
+        return;
+    if (node->value == value && value == 3 && node->left == NULL && node->right == NULL) {
+        *root = NULL;
+        printf("triggerd!\n");
+        free(node);
+        return;
+    } else if (node->value == value && ((node->left != NULL && node->right == NULL) || (node->left == NULL && node->right != NULL))) {
+        *root = node->left != NULL ? node->left : node->right;
+        free(node);
+        return;
+    }
+    /* ---------- todo : more clean up code ---------- */
     while (node != NULL && node->value != value) {
         parent_node = node;
-        node = node->value > value ? node->left : node->right;
+        if (node->value > value && node->left != NULL)
+            node = node->left;
+        else if (node->value <= value && node->right != NULL)
+            node = node->right;
+        else
+            node = NULL;
     }
     if (node == NULL)
         return;
-    if (node->left != NULL && node->right != NULL) {
-        subtree_node = node->left;
-        while (subtree_node->right) {
-            node = subtree_node;
-            subtree_node = subtree_node->right;
+    if (node->left != NULL) {
+        leaf_node = node->left;
+        while (leaf_node->right != NULL) {
+            parent_leaf_node = leaf_node;
+            leaf_node = leaf_node->right;
         }
-        node->value = subtree_node->value;
-        child_node = subtree_node->left;
+        node->value = leaf_node->value;
+    } else if (node->right != NULL) {
+        leaf_node = node->right;
+        while (leaf_node->left != NULL) {
+            parent_leaf_node = leaf_node;
+            leaf_node = leaf_node->left;
+        }
+        node->value = leaf_node->value;
     } else {
-        child_node = node->left != NULL ? node->left : node->right;
+        leaf_node = node;
+        if (parent_node != NULL && parent_node != node) {
+            if (parent_node->left == node)
+                parent_node->left = NULL;
+            else if (parent_node->right == node)
+                parent_node->right = NULL;
+        }
     }
-    if (parent_node == NULL)
-        root = child_node;
-    else if (parent_node->left == node)
-        parent_node->left = child_node;
-    else
-        parent_node->right = child_node;
-    if (node->is_dynamic)
-        free(node);
+    if (parent_leaf_node != NULL) {
+        if (parent_leaf_node->left == leaf_node)
+            parent_leaf_node->left = NULL;
+        else if (parent_leaf_node->right == leaf_node)
+            parent_leaf_node->right = NULL;
+    }
+    /* NOTICE : which function called firstly? memset() vs free()? */
+    memset(leaf_node, 0, sizeof(struct bst_node));
+    free(leaf_node);
 }
