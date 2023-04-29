@@ -23,16 +23,18 @@ int main(void)
     bst_delete(&root, 5);
     printf("try to delete node 2\n");
     bst_delete(&root, 2);
+    printf("searching node 3 : %s\n", bst_search(root, 3) ? "Founded!" : "Not Founded!");
     printf("try to delete node 5\n");
     bst_delete(&root, 5);
     traverse_in_order_recursive(root, root);
     printf("try to delete node 3\n");
     bst_delete(&root, 3);
     printf("try to delete node 12\n");
-    bst_delete(&root, 12); /* accessing invalid root node. */
+    bst_delete(&root, 12);
     traverse_in_order_recursive(root, root);
     printf("try to delete node 3\n");
     bst_delete(&root, 3);
     traverse_in_order_recursive(root, root);
+    printf("searching node 3 : %s\n", bst_search(root, 3) ? "Founded!" : "Not Founded!");
     return 0;
 }
