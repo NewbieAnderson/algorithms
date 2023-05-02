@@ -80,6 +80,11 @@ struct bst_node *bst_insert(struct bst_node *root, const int value);
 */
 void bst_delete(struct bst_node **root, const int value);
 
-void bst_free(struct bst_node *root);
+/**
+ * release all nodes in bst
+ * 
+ * node : node of bst
+*/
+void bst_free(struct bst_node *node);
 
 #endif

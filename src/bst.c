@@ -157,3 +157,14 @@ void bst_delete(struct bst_node **root, const int value)
     memset(leaf_node, 0, sizeof(struct bst_node));
     free(leaf_node);
 }
+
+void bst_free(struct bst_node *node)
+{
+    if (node == NULL)
+        return;
+    bst_free(node->left);
+    bst_free(node->right);
+    if (node->is_dynamic)
+        free(node);
+    memset(node, 0, sizeof(struct bst_node));
+}

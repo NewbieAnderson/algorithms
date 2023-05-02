@@ -36,5 +36,6 @@ int main(void)
     bst_delete(&root, 3);
     traverse_in_order_recursive(root, root);
     printf("searching node 3 : %s\n", bst_search(root, 3) ? "Founded!" : "Not Founded!");
+    bst_free(root);
     return 0;
 }
